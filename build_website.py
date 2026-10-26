@@ -1244,20 +1244,6 @@ html_template = """<!DOCTYPE html>
     <!-- Main Content Stream -->
     <main class="main-content">
       
-      <!-- Hero Banner -->
-      <section class="hero-banner">
-        <h2 class="hero-title">Probability & Stochastic Processes Hub</h2>
-        <p class="hero-desc">
-          Interactive practical repository containing verified Python implementations, mathematical formulations, complete outputs, and viva explanations for Practicals 1 through 8.
-        </p>
-        <div class="hero-stats">
-          <div class="stat-pill"><span class="stat-num">8</span> Total Practicals</div>
-          <div class="stat-pill"><span class="stat-num">25+</span> Problem Solutions</div>
-          <div class="stat-pill"><span class="stat-num">100%</span> Copyable Clean Code</div>
-          <div class="stat-pill"><span class="stat-num">NumPy / SciPy</span> Verified</div>
-        </div>
-      </section>
-
       <!-- Practicals Sections -->
       {sections_html}
 
