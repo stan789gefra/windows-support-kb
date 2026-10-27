@@ -1,0 +1,268 @@
+======================================================================
+ PRACTICAL 1: PRACTICAL 1: PROBABILITY SIMULATIONS & LAW OF LARGE NUMBERS
+======================================================================
+
+THEORY: Core Theory: Classical vs. Empirical Probability & Law of Large Numbers (LLN)
+Empirical probability estimates the likelihood of an event based on real observations (P(E) = n(E) / N). The Law of Large Numbers states that as the number of independent trials N approaches infinity, the empirical probability converges to the theoretical probability.
+
+----------------------------------------------------------------------
+[Question 1] Simulate 100 Coin Tosses & Compare with Theoretical Probability
+----------------------------------------------------------------------
+PROBLEM:
+A fair coin is tossed 100 times. Simulate 100 coin tosses using NumPy. Count the number of Heads and Tails. Calculate the empirical probability of obtaining Head and Tail and compare them with the theoretical probabilities P(H) = 0.5, P(T) = 0.5.
+
+PYTHON CODE:
+import numpy as np
+
+# Set random seed for reproducibility
+np.random.seed(42)
+
+# Simulate 100 coin tosses ('Head' or 'Tail')
+tosses = np.random.choice(['Head', 'Tail'], size=100)
+
+# Count frequencies
+heads = np.sum(tosses == 'Head')
+tails = np.sum(tosses == 'Tail')
+
+# Calculate empirical probabilities
+prob_heads = heads / len(tosses)
+prob_tails = tails / len(tosses)
+
+# Display results
+print(f"Heads Count: {heads}")
+print(f"Tails Count: {tails}")
+print(f"Empirical P(Head): {prob_heads:.4f} | Theoretical P(Head): 0.5000")
+print(f"Empirical P(Tail): {prob_tails:.4f} | Theoretical P(Tail): 0.5000")
+
+VERIFIED OUTPUT:
+Heads Count: 44
+Tails Count: 56
+Empirical P(Head): 0.4400 | Theoretical P(Head): 0.5000
+Empirical P(Tail): 0.5600 | Theoretical P(Tail): 0.5000
+
+VIVA / KEY CONCEPT: Why doesn't the empirical probability exactly equal 0.5 for 100 tosses? Because 100 is a relatively small sample size subject to random sample variance. As N increases, random fluctuations average out.
+
+
+----------------------------------------------------------------------
+[Question 2] Demonstrate the Law of Large Numbers (Sample Sizes 10 to 100,000)
+----------------------------------------------------------------------
+PROBLEM:
+Repeat the coin-toss experiment for sample sizes n = 10, 100, 1,000, 10,000, and 100,000. Calculate the empirical probability of Heads for each sample size and plot the convergence curve against the theoretical probability line (y = 0.5).
+
+PYTHON CODE:
+import numpy as np
+import matplotlib.pyplot as plt
+
+sample_sizes = [10, 100, 1000, 10000, 100000]
+probabilities = []
+
+np.random.seed(42)
+print("--- Law of Large Numbers Convergence ---")
+for n in sample_sizes:
+    tosses = np.random.choice(['Head', 'Tail'], size=n)
+    heads = np.sum(tosses == 'Head')
+    prob = heads / n
+    probabilities.append(prob)
+    print(f"Tosses (n = {n:>6}): Heads = {heads:>5} | Empirical P(Head) = {prob:.5f}")
+
+# Plotting the convergence graph
+plt.figure(figsize=(10, 5))
+plt.plot(sample_sizes, probabilities, marker='o', color='#0284c7', linewidth=2, label='Empirical P(Head)')
+plt.axhline(y=0.5, color='#ef4444', linestyle='--', linewidth=2, label='Theoretical P(Head) = 0.5')
+plt.xscale('log')
+plt.xlabel("Number of Tosses (Log Scale)")
+plt.ylabel("Empirical Probability of Heads")
+plt.title("Law of Large Numbers: Convergence of Empirical Probability")
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()
+
+VERIFIED OUTPUT:
+--- Law of Large Numbers Convergence ---
+Tosses (n =     10): Heads =     7 | Empirical P(Head) = 0.70000
+Tosses (n =    100): Heads =    47 | Empirical P(Head) = 0.47000
+Tosses (n =   1000): Heads =   493 | Empirical P(Head) = 0.49300
+Tosses (n =  10000): Heads =  5076 | Empirical P(Head) = 0.50760
+Tosses (n = 100000): Heads = 49937 | Empirical P(Head) = 0.49937
+
+VIVA / KEY CONCEPT: Notice how at n=10, P(Head)=0.70 (30% error), but by n=100,000, P(Head)=0.49937 (under 0.1% error). This proves the Law of Large Numbers.
+
+
+----------------------------------------------------------------------
+[Question 3] Dice Roll Simulation (10,000 Rolls of a Fair 6-Sided Die)
+----------------------------------------------------------------------
+PROBLEM:
+Simulate 10,000 rolls of a fair six-sided die where X denotes the outcome. Estimate: 1) P(X=6), 2) P(X is even), 3) P(X > 4), 4) P(X <= 3). Compare with theoretical values.
+
+PYTHON CODE:
+import numpy as np
+
+np.random.seed(42)
+
+# Simulate 10,000 dice rolls (integers from 1 to 6)
+rolls = np.random.randint(1, 7, size=10000)
+
+# Calculate empirical probabilities
+p_6 = np.mean(rolls == 6)
+p_even = np.mean(rolls % 2 == 0)
+p_greater_4 = np.mean(rolls > 4)
+p_less_equal_3 = np.mean(rolls <= 3)
+
+# Theoretical probabilities
+theo_6 = 1 / 6
+theo_even = 3 / 6
+theo_greater_4 = 2 / 6
+theo_less_equal_3 = 3 / 6
+
+print(f"P(X = 6)     : Empirical = {p_6:.4f} | Theoretical = {theo_6:.4f}")
+print(f"P(X is even) : Empirical = {p_even:.4f} | Theoretical = {theo_even:.4f}")
+print(f"P(X > 4)     : Empirical = {p_greater_4:.4f} | Theoretical = {theo_greater_4:.4f}")
+print(f"P(X <= 3)    : Empirical = {p_less_equal_3:.4f} | Theoretical = {theo_less_equal_3:.4f}")
+
+VERIFIED OUTPUT:
+P(X = 6)     : Empirical = 0.1657 | Theoretical = 0.1667
+P(X is even) : Empirical = 0.5021 | Theoretical = 0.5000
+P(X > 4)     : Empirical = 0.3346 | Theoretical = 0.3333
+P(X <= 3)    : Empirical = 0.4982 | Theoretical = 0.5000
+
+VIVA / KEY CONCEPT: Why use np.mean(condition)? In Python, a boolean array evaluates True as 1 and False as 0. The mean of booleans equals the proportion of True values, directly computing empirical probability.
+
+
+----------------------------------------------------------------------
+[Question 4] Frequency Distribution & Probability Bar Plot of a Die
+----------------------------------------------------------------------
+PROBLEM:
+Calculate the frequency and empirical probability of each outcome {1, 2, 3, 4, 5, 6} across 10,000 rolls. Display as a table and plot the empirical probability distribution using a bar graph.
+
+PYTHON CODE:
+import numpy as np
+import matplotlib.pyplot as plt
+
+np.random.seed(42)
+rolls = np.random.randint(1, 7, size=10000)
+
+# Calculate unique values, counts and empirical probabilities
+values, counts = np.unique(rolls, return_counts=True)
+probabilities = counts / len(rolls)
+
+print("Face\tFrequency\tEmpirical Probability")
+print("-" * 42)
+for val, count, prob in zip(values, counts, probabilities):
+    print(f"{val}\t{count}\t\t{prob:.4f}")
+
+# Plot bar graph
+plt.figure(figsize=(8, 4.5))
+plt.bar(values, probabilities, color='#38bdf8', edgecolor='#0369a1', alpha=0.85, label='Empirical Probability')
+plt.axhline(y=1/6, color='#ef4444', linestyle='--', label='Theoretical (1/6 ≈ 0.1667)')
+plt.xlabel("Dice Outcome Face")
+plt.ylabel("Empirical Probability")
+plt.title("Empirical Probability Distribution of a Fair Die")
+plt.xticks(values)
+plt.legend()
+plt.grid(axis='y', alpha=0.3)
+plt.show()
+
+VERIFIED OUTPUT:
+Face	Frequency	Empirical Probability
+------------------------------------------
+1	1665		0.1665
+2	1692		0.1692
+3	1625		0.1625
+4	1672		0.1672
+5	1689		0.1689
+6	1657		0.1657
+
+VIVA / KEY CONCEPT: Are all six outcomes approximately equally likely? Yes, each face lands roughly 16.6% of the time, aligning with the discrete uniform distribution.
+
+
+----------------------------------------------------------------------
+[Question 5] Sum of Two Dice Simulation (10,000 Rolls)
+----------------------------------------------------------------------
+PROBLEM:
+Two fair dice are rolled simultaneously 10,000 times. Let S = X1 + X2 be the sum of the two dice. Calculate empirical probabilities: P(S=2), P(S=7), P(S=12), and P(S > 9). Compare P(S=7) with theoretical probability (6/36 = 1/6).
+
+PYTHON CODE:
+import numpy as np
+
+n = 10000
+np.random.seed(42)
+
+# Simulate rolling two dice
+die1 = np.random.randint(1, 7, size=n)
+die2 = np.random.randint(1, 7, size=n)
+total = die1 + die2
+
+# Calculate empirical probabilities
+p_sum_2 = np.mean(total == 2)
+p_sum_7 = np.mean(total == 7)
+p_sum_12 = np.mean(total == 12)
+p_greater_9 = np.mean(total > 9)
+
+print(f"P(S = 2)  : Empirical = {p_sum_2:.4f} | Theoretical = 1/36 ≈ {1/36:.4f}")
+print(f"P(S = 7)  : Empirical = {p_sum_7:.4f} | Theoretical = 6/36 ≈ {6/36:.4f}")
+print(f"P(S = 12) : Empirical = {p_sum_12:.4f} | Theoretical = 1/36 ≈ {1/36:.4f}")
+print(f"P(S > 9)  : Empirical = {p_greater_9:.4f} | Theoretical = 6/36 ≈ {6/36:.4f}")
+
+VERIFIED OUTPUT:
+P(S = 2)  : Empirical = 0.0273 | Theoretical = 1/36 ≈ 0.0278
+P(S = 7)  : Empirical = 0.1616 | Theoretical = 6/36 ≈ 0.1667
+P(S = 12) : Empirical = 0.0275 | Theoretical = 1/36 ≈ 0.0278
+P(S > 9)  : Empirical = 0.1689 | Theoretical = 6/36 ≈ 0.1667
+
+VIVA / KEY CONCEPT: Why is P(S=7) higher than P(S=2)? There are 6 combinations to sum to 7: (1,6), (2,5), (3,4), (4,3), (5,2), (6,1). But only 1 combination makes 2: (1,1).
+
+
+----------------------------------------------------------------------
+[Question 6] Complete Probability Distribution for Sum of Two Dice (100,000 Rolls)
+----------------------------------------------------------------------
+PROBLEM:
+Simulate 100,000 rolls of two dice. Calculate frequency and probability for every possible sum from 2 to 12. Plot the resulting triangular distribution.
+
+PYTHON CODE:
+import numpy as np
+import matplotlib.pyplot as plt
+
+n = 100000
+np.random.seed(42)
+
+# Roll two dice 100,000 times
+die1 = np.random.randint(1, 7, size=n)
+die2 = np.random.randint(1, 7, size=n)
+total = die1 + die2
+
+# Frequencies and empirical probabilities
+sums, counts = np.unique(total, return_counts=True)
+probabilities = counts / len(total)
+
+print("Sum\tFrequency\tEmpirical Probability")
+print("-" * 42)
+for s, count, prob in zip(sums, counts, probabilities):
+    print(f"{s:>2}\t{count:>7}\t\t{prob:.4f}")
+
+# Plot bar distribution
+plt.figure(figsize=(10, 5))
+plt.bar(sums, probabilities, color='#818cf8', edgecolor='#4338ca', width=0.7)
+plt.xlabel("Sum of Two Dice (S)")
+plt.ylabel("Empirical Probability")
+plt.title("Empirical Probability Distribution of the Sum of Two Dice (Triangular Distribution)")
+plt.xticks(range(2, 13))
+plt.grid(axis='y', alpha=0.3)
+plt.show()
+
+VERIFIED OUTPUT:
+Sum	Frequency	Empirical Probability
+------------------------------------------
+ 2	   2798		0.0280
+ 3	   5501		0.0550
+ 4	   8328		0.0833
+ 5	  11041		0.1104
+ 6	  13924		0.1392
+ 7	  16569		0.1657
+ 8	  14172		0.1417
+ 9	  11032		0.1103
+10	   8299		0.0830
+11	   5602		0.0560
+12	   2734		0.0273
+
+VIVA / KEY CONCEPT: Does the simulated distribution resemble the theoretical distribution? Yes, it forms a symmetric triangular distribution peaking at S=7 with minimum probabilities at S=2 and S=12.
+

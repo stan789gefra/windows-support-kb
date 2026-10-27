@@ -1,0 +1,183 @@
+======================================================================
+ PRACTICAL 2: PRACTICAL 2: CONTINUOUS & DISCRETE PROBABILITY DISTRIBUTIONS
+======================================================================
+
+THEORY: Core Theory: Parametric Distribution Fitting via Maximum Likelihood Estimation (MLE)
+Fitting a probability distribution involves finding parameter estimates (e.g., mean μ and variance σ² for Normal, rate λ for Poisson, scale β = 1/λ for Exponential) that maximize the likelihood of observing the empirical sample data.
+
+----------------------------------------------------------------------
+[Question 1] Normal Distribution: Modeling & Fitting Examination Scores
+----------------------------------------------------------------------
+PROBLEM:
+1. Generate 500 normally distributed scores with mean 70 and standard deviation 10. 2. Plot a density histogram. 3. Fit a Normal distribution using stats.norm.fit. 4. Overlay the fitted PDF on the histogram. 5. Report estimated mean and std dev.
+
+PYTHON CODE:
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+np.random.seed(42)
+
+# Generate 500 examination scores
+data = np.random.normal(loc=70, scale=10, size=500)
+
+# Fit normal distribution to estimate parameters (mu, sigma)
+mu, sigma = stats.norm.fit(data)
+
+# Plot density histogram
+plt.figure(figsize=(9, 5))
+plt.hist(data, bins=20, density=True, alpha=0.6, color='#10b981', edgecolor='#047857', label='Observed Scores')
+
+# Generate fitted PDF line
+x = np.linspace(data.min(), data.max(), 300)
+pdf = stats.norm.pdf(x, mu, sigma)
+plt.plot(x, pdf, color='#b91c1c', linewidth=2.5, label=f'Fitted Normal PDF (μ={mu:.2f}, σ={sigma:.2f})')
+
+plt.xlabel("Examination Score")
+plt.ylabel("Probability Density")
+plt.title("Normal Distribution: Observed Data & Fitted PDF")
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()
+
+print(f"Estimated Mean (μ)              : {mu:.4f} (True: 70)")
+print(f"Estimated Standard Deviation (σ): {sigma:.4f} (True: 10)")
+
+VERIFIED OUTPUT:
+Estimated Mean (μ)              : 70.0684 (True: 70)
+Estimated Standard Deviation (σ): 9.8027 (True: 10)
+
+VIVA / KEY CONCEPT: Why must density=True in plt.hist? Because the PDF represents probability density, where the total area under the curve equals 1. Setting density=True normalizes histogram bin heights so area sums to 1.
+
+
+----------------------------------------------------------------------
+[Question 2] Poisson Distribution: Customer Support Requests per Minute
+----------------------------------------------------------------------
+PROBLEM:
+1. Generate 500 observations assuming an average of 4 requests per minute (Poisson with λ=4). 2. Plot frequency distribution. 3. Estimate Poisson parameter λ. 4. Overlay fitted Poisson PMF probabilities.
+
+PYTHON CODE:
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+np.random.seed(42)
+
+# Generate 500 Poisson samples with lambda = 4
+data = np.random.poisson(lam=4, size=500)
+
+# Estimate parameter lambda (sample mean)
+lambda_hat = np.mean(data)
+
+# Calculate observed probabilities
+values, counts = np.unique(data, return_counts=True)
+observed_prob = counts / len(data)
+
+# Compute fitted Poisson PMF at observed values
+fitted_prob = stats.poisson.pmf(values, lambda_hat)
+
+# Plotting Observed vs Fitted
+plt.figure(figsize=(9, 5))
+plt.bar(values, observed_prob, alpha=0.6, color='#38bdf8', edgecolor='#0284c7', label='Observed Frequency')
+plt.plot(values, fitted_prob, 'o-', color='#dc2626', linewidth=2, label=f'Fitted Poisson (λ={lambda_hat:.3f})')
+
+plt.xlabel("Number of Requests per Minute")
+plt.ylabel("Probability")
+plt.title("Poisson Distribution: Observed vs. Fitted PMF")
+plt.legend()
+plt.grid(axis='y', alpha=0.3)
+plt.show()
+
+print(f"Estimated Lambda (λ): {lambda_hat:.4f} (True λ = 4)")
+
+VERIFIED OUTPUT:
+Estimated Lambda (λ): 3.9320 (True λ = 4)
+
+VIVA / KEY CONCEPT: What is the key property of the Poisson distribution? In a theoretical Poisson distribution, the mean and variance are equal: E[X] = Var(X) = λ.
+
+
+----------------------------------------------------------------------
+[Question 3] Exponential Distribution: Customer Waiting Time
+----------------------------------------------------------------------
+PROBLEM:
+1. Generate 500 observations from an Exponential distribution assuming an average waiting time of 5 minutes (scale=5). 2. Plot histogram. 3. Fit Exponential distribution. 4. Overlay fitted PDF.
+
+PYTHON CODE:
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+np.random.seed(42)
+
+# Generate 500 exponential waiting times with average scale = 5 mins
+data = np.random.exponential(scale=5, size=500)
+
+# Fit exponential distribution fixing loc=0
+loc, scale = stats.expon.fit(data, floc=0)
+
+# Plot density histogram
+plt.figure(figsize=(9, 5))
+plt.hist(data, bins=25, density=True, alpha=0.6, color='#f97316', edgecolor='#c2410c', label='Observed Wait Times')
+
+# Overlay fitted exponential PDF
+x = np.linspace(0, data.max(), 300)
+pdf = stats.expon.pdf(x, loc=loc, scale=scale)
+plt.plot(x, pdf, color='#1e3a8a', linewidth=2.5, label=f'Fitted Expon PDF (Scale={scale:.2f} mins)')
+
+plt.xlabel("Waiting Time (minutes)")
+plt.ylabel("Probability Density")
+plt.title("Exponential Distribution: Customer Waiting Time")
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()
+
+print(f"Estimated Scale Parameter (Mean Wait Time): {scale:.4f} minutes (True: 5.0)")
+
+VERIFIED OUTPUT:
+Estimated Scale Parameter (Mean Wait Time): 5.0215 minutes (True: 5.0)
+
+VIVA / KEY CONCEPT: What is the memoryless property of the Exponential distribution? P(X > s + t | X > s) = P(X > t). The probability of waiting an additional t minutes is independent of how long you have already waited.
+
+
+----------------------------------------------------------------------
+[Question 4] Sensor Noise Modeling with Gaussian Distribution
+----------------------------------------------------------------------
+PROBLEM:
+Given true sensor measurements X = [50, 52, 48, 51, 49, 53, 50, 47, 52, 51], model measurement noise following Gaussian noise ϵ ~ N(0, σ²=4) (σ = 2). Compare original vs noisy data and visualize effect.
+
+PYTHON CODE:
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Original clean sensor readings
+data = np.array([50, 52, 48, 51, 49, 53, 50, 47, 52, 51])
+
+np.random.seed(42)
+# Gaussian noise with mean 0 and standard deviation 2 (variance 4)
+noise = np.random.normal(loc=0, scale=2, size=len(data))
+
+# Noisy observed data
+noisy_data = data + noise
+
+print("Original Sensor Readings :", data)
+print("Generated Gaussian Noise :", np.round(noise, 3))
+print("Noisy Sensor Readings    :", np.round(noisy_data, 3))
+
+# Visualization
+plt.figure(figsize=(10, 5))
+plt.plot(data, marker='o', linewidth=2, color='#2563eb', label='True Signal (Original)')
+plt.plot(noisy_data, marker='s', linestyle='--', linewidth=2, color='#ef4444', label='Noisy Sensor Measurement (Signal + Noise)')
+plt.xlabel("Observation Index")
+plt.ylabel("Measurement Value")
+plt.title("Impact of Gaussian Noise on Sensor Measurements")
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()
+
+VERIFIED OUTPUT:
+Original Sensor Readings : [50 52 48 51 49 53 50 47 52 51]
+Generated Gaussian Noise : [ 0.993 -0.277  1.295  3.046 -0.468 -0.468  3.158  1.535 -0.939  1.085]
+Noisy Sensor Readings    : [50.993 51.723 49.295 54.046 48.532 52.532 53.158 48.535 51.061 52.085]
+
+VIVA / KEY CONCEPT: Why is sensor noise modeled using a Gaussian distribution? According to the Central Limit Theorem, when many microscopic independent random perturbations combine, their sum approaches a Gaussian distribution.
+

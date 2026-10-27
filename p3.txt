@@ -1,0 +1,193 @@
+======================================================================
+ PRACTICAL 3: PRACTICAL 3: JOINT, MARGINAL & CONDITIONAL PROBABILITY ON REAL DATASETS
+======================================================================
+
+THEORY: Core Theory: Contingency Tables, Joint & Conditional Probability
+Joint Probability P(A ∩ B) is the probability that both events occur. Conditional Probability P(A | B) = P(A ∩ B) / P(B) is the probability of A given that B has occurred. Two events are statistically independent if and only if P(A ∩ B) = P(A) · P(B).
+
+----------------------------------------------------------------------
+[Titanic Part A] Titanic: Contingency Table & Survival by Gender
+----------------------------------------------------------------------
+PROBLEM:
+Load the Titanic dataset. Construct a contingency table for sex vs. survival, then estimate: 1) Joint probability P(Female ∩ Survived), 2) Conditional probability P(Survived | Female), 3) Conditional probability P(Survived | Male).
+
+PYTHON CODE:
+import pandas as pd
+import seaborn as sns
+
+# Load Titanic dataset
+df = sns.load_dataset('titanic')
+
+# Contingency table (counts)
+table = pd.crosstab(df['sex'], df['survived'], margins=True)
+print("--- Contingency Table: Sex vs. Survived ---")
+print(table)
+
+total = len(df)
+female_survived = ((df['sex'] == 'female') & (df['survived'] == 1)).sum()
+total_female = (df['sex'] == 'female').sum()
+total_male = (df['sex'] == 'male').sum()
+male_survived = ((df['sex'] == 'male') & (df['survived'] == 1)).sum()
+
+# 1. Joint Probability
+p_female_and_survived = female_survived / total
+
+# 2. Conditional Probability P(Survived | Female)
+p_survived_given_female = female_survived / total_female
+
+# 3. Conditional Probability P(Survived | Male)
+p_survived_given_male = male_survived / total_male
+
+print(f"\nJoint Probability P(Female ∩ Survived)     : {p_female_and_survived:.4f}")
+print(f"Conditional Probability P(Survived | Female) : {p_survived_given_female:.4f}")
+print(f"Conditional Probability P(Survived | Male)   : {p_survived_given_male:.4f}")
+
+VERIFIED OUTPUT:
+--- Contingency Table: Sex vs. Survived ---
+survived    0    1  All
+sex                    
+female     81  233  314
+male      468  109  577
+All       549  342  891
+
+Joint Probability P(Female ∩ Survived)     : 0.2615
+Conditional Probability P(Survived | Female) : 0.7420
+Conditional Probability P(Survived | Male)   : 0.1889
+
+VIVA / KEY CONCEPT: What does P(Survived | Female) = 74.2% vs P(Survived | Male) = 18.9% signify? It demonstrates strong statistical dependence between gender and survival due to the 'women and children first' evacuation policy.
+
+
+----------------------------------------------------------------------
+[Titanic Part B] Titanic: Probability of Survival Conditional on Passenger Class
+----------------------------------------------------------------------
+PROBLEM:
+Estimate the conditional probability of survival given passenger class (First, Second, Third) using groupby().
+
+PYTHON CODE:
+import seaborn as sns
+
+df = sns.load_dataset('titanic')
+
+# Survival rate grouped by Passenger Class
+survival_by_class = df.groupby('class', observed=False)['survived'].mean()
+
+print("--- Conditional Probability: P(Survived | Pclass) ---")
+for pclass, rate in survival_by_class.items():
+    print(f"P(Survived | {pclass:<6} Class) : {rate:.4f} ({rate*100:.1f}%)")
+
+VERIFIED OUTPUT:
+--- Conditional Probability: P(Survived | Pclass) ---
+P(Survived | First  Class) : 0.6296 (63.0%)
+P(Survived | Second Class) : 0.4728 (47.3%)
+P(Survived | Third  Class) : 0.2424 (24.2%)
+
+VIVA / KEY CONCEPT: Notice that First Class passengers had more than 2.5x higher survival probability than Third Class passengers, confirming socioeconomic privilege in emergency rescue.
+
+
+----------------------------------------------------------------------
+[Penguins Part A] Palmer Penguins: Contingency Table & Joint Probabilities
+----------------------------------------------------------------------
+PROBLEM:
+Load the Palmer Penguins dataset. Construct a contingency table for Species vs. Island. Compute: 1) P(Adelie ∩ Dream), 2) P(Gentoo ∩ Biscoe).
+
+PYTHON CODE:
+import pandas as pd
+import seaborn as sns
+
+df = sns.load_dataset('penguins')
+
+# Contingency table
+contingency_table = pd.crosstab(df['species'], df['island'], margins=True)
+print("--- Contingency Table: Species vs. Island ---")
+print(contingency_table)
+
+total = len(df)
+adelie_dream = ((df['species'] == 'Adelie') & (df['island'] == 'Dream')).sum()
+gentoo_biscoe = ((df['species'] == 'Gentoo') & (df['island'] == 'Biscoe')).sum()
+
+p_adelie_dream = adelie_dream / total
+p_gentoo_biscoe = gentoo_biscoe / total
+
+print(f"\nP(Adelie ∩ Dream Island) : {p_adelie_dream:.4f}")
+print(f"P(Gentoo ∩ Biscoe Island): {p_gentoo_biscoe:.4f}")
+
+VERIFIED OUTPUT:
+--- Contingency Table: Species vs. Island ---
+island     Biscoe  Dream  Torgersen  All
+species                                 
+Adelie         44     56         52  152
+Chinstrap       0     68          0   68
+Gentoo        124      0          0  124
+All           168    124         52  344
+
+P(Adelie ∩ Dream Island) : 0.1628
+P(Gentoo ∩ Biscoe Island): 0.3605
+
+VIVA / KEY CONCEPT: Look closely at the table: All 124 Gentoo penguins live on Biscoe Island, and all 68 Chinstrap penguins live on Dream Island. Only Adelie penguins inhabit all three islands.
+
+
+----------------------------------------------------------------------
+[Penguins Part B] Palmer Penguins: Conditional Probabilities
+----------------------------------------------------------------------
+PROBLEM:
+Calculate: 1) P(Adelie | Dream Island), 2) P(Male | Gentoo Species).
+
+PYTHON CODE:
+import seaborn as sns
+
+df = sns.load_dataset('penguins')
+
+# 1. P(Adelie | Dream)
+dream_count = (df['island'] == 'Dream').sum()
+adelie_and_dream = ((df['species'] == 'Adelie') & (df['island'] == 'Dream')).sum()
+p_adelie_given_dream = adelie_and_dream / dream_count
+
+# 2. P(Male | Gentoo)
+gentoo_count = (df['species'] == 'Gentoo').sum()
+male_and_gentoo = ((df['sex'] == 'Male') & (df['species'] == 'Gentoo')).sum()
+p_male_given_gentoo = male_and_gentoo / gentoo_count
+
+print(f"P(Adelie | Dream Island) : {p_adelie_given_dream:.4f} (56 / 124)")
+print(f"P(Male | Gentoo Species) : {p_male_given_gentoo:.4f} (61 / 124)")
+
+VERIFIED OUTPUT:
+P(Adelie | Dream Island) : 0.4516 (56 / 124)
+P(Male | Gentoo Species) : 0.4919 (61 / 124)
+
+VIVA / KEY CONCEPT: Why does P(Male | Gentoo) equal 49.19%? Because in nature, the sex ratio of penguins is approximately 1:1 (50% male, 50% female).
+
+
+----------------------------------------------------------------------
+[Penguins Part C] Statistical Independence Test: P(A ∩ B) vs P(A) · P(B)
+----------------------------------------------------------------------
+PROBLEM:
+Test whether Species and Island are statistically independent using: P(A ∩ B) = P(A) · P(B). Let A = Penguin is Gentoo, B = Penguin is on Biscoe Island.
+
+PYTHON CODE:
+import seaborn as sns
+
+df = sns.load_dataset('penguins')
+total = len(df)
+
+# Probabilities
+p_A = (df['species'] == 'Gentoo').sum() / total
+p_B = (df['island'] == 'Biscoe').sum() / total
+p_A_and_B = ((df['species'] == 'Gentoo') & (df['island'] == 'Biscoe')).sum() / total
+
+product = p_A * p_B
+
+print(f"P(Gentoo)            : {p_A:.4f}")
+print(f"P(Biscoe)            : {p_B:.4f}")
+print(f"P(Gentoo ∩ Biscoe)   : {p_A_and_B:.4f}")
+print(f"P(Gentoo) * P(Biscoe): {product:.4f}")
+print(f"Are Species and Island independent? {abs(p_A_and_B - product) < 1e-5}")
+
+VERIFIED OUTPUT:
+P(Gentoo)            : 0.3605
+P(Biscoe)            : 0.4884
+P(Gentoo ∩ Biscoe)   : 0.3605
+P(Gentoo) * P(Biscoe): 0.1760
+Are Species and Island independent? False
+
+VIVA / KEY CONCEPT: Why are they not independent? Because P(A ∩ B) = 0.3605 is vastly different from P(A) · P(B) = 0.1760. Knowing a penguin is Gentoo dramatically increases the probability that it is on Biscoe Island (to 100%).
+

@@ -1,0 +1,170 @@
+======================================================================
+ PRACTICAL 4: PRACTICAL 4: DISCRETE-TIME MARKOV CHAINS (DTMC)
+======================================================================
+
+THEORY: Core Theory: Discrete-Time Markov Chains & State Transition Dynamics
+A Markov chain satisfies the Markov property: the future state depends only on the current state. The transition matrix P defines P_ij = P(X_t+1 = j | X_t = i). The state probability vector after t periods is given by Chapman-Kolmogorov: v_t = v_0 · P^t.
+
+----------------------------------------------------------------------
+[Question 1 & 2] Transition Matrix Setup & 1-Period Customer State Distribution
+----------------------------------------------------------------------
+PROBLEM:
+Define customer states S = ['New', 'Active', 'Churned']. Matrix: New -> [0.5, 0.4, 0.1], Active -> [0.1, 0.7, 0.2], Churned -> [0.0, 0.0, 1.0]. Check row sums. For initial customer vector v0 = [1, 0, 0], compute state distribution after 1 period.
+
+PYTHON CODE:
+import numpy as np
+import pandas as pd
+
+states = ["New", "Active", "Churned"]
+
+# Transition Probability Matrix (Row to Column)
+matrix_1 = np.array([
+    [0.50, 0.40, 0.10],   # New
+    [0.10, 0.70, 0.20],   # Active
+    [0.00, 0.00, 1.00]    # Churned (Absorbing State)
+])
+
+# Create readable DataFrame
+transition_matrix = pd.DataFrame(matrix_1, columns=states, index=states)
+print("--- Transition Matrix P ---")
+print(transition_matrix)
+
+# Verify stochastic matrix property: each row sum must equal 1.0
+print("\nRow Sums:", matrix_1.sum(axis=1))
+
+# Initial state: 100% New customers
+initial_distribution = np.array([1.0, 0.0, 0.0])
+
+# Distribution after 1 period: v_1 = v_0 @ P
+distribution_1 = initial_distribution @ matrix_1
+
+print("\n--- State Distribution after 1 Period ---")
+for state, prob in zip(states, distribution_1):
+    print(f"{state:<8}: {prob:.4f}")
+
+VERIFIED OUTPUT:
+--- Transition Matrix P ---
+         New  Active  Churned
+New      0.5     0.4      0.1
+Active   0.1     0.7      0.2
+Churned  0.0     0.0      1.0
+
+Row Sums: [1. 1. 1.]
+
+--- State Distribution after 1 Period ---
+New     : 0.5000
+Active  : 0.4000
+Churned : 0.1000
+
+VIVA / KEY CONCEPT: What is an absorbing state in a Markov chain? A state that once entered cannot be left. Here, row 3 is [0, 0, 1], meaning once a customer is 'Churned', they remain churned forever (P_33 = 1).
+
+
+----------------------------------------------------------------------
+[Question 3] Predict Customer State Distribution After 5 Periods
+----------------------------------------------------------------------
+PROBLEM:
+Starting from initial distribution v0 = [1, 0, 0], compute the customer state distribution after 5 periods using matrix multiplication v5 = v0 · P^5.
+
+PYTHON CODE:
+import numpy as np
+
+states = ["New", "Active", "Churned"]
+matrix_1 = np.array([
+    [0.50, 0.40, 0.10],
+    [0.10, 0.70, 0.20],
+    [0.00, 0.00, 1.00]
+])
+
+initial_distribution = np.array([1.0, 0.0, 0.0])
+distribution = initial_distribution.copy()
+
+# Multiply by transition matrix 5 times
+for step in range(1, 6):
+    distribution = distribution @ matrix_1
+
+print("--- Distribution after 5 Periods (v_5 = v_0 @ P^5) ---")
+for state, prob in zip(states, distribution):
+    print(f"{state:<8}: {prob:.4f}")
+
+VERIFIED OUTPUT:
+--- Distribution after 5 Periods (v_5 = v_0 @ P^5) ---
+New     : 0.1130
+Active  : 0.3375
+Churned : 0.5495
+
+VIVA / KEY CONCEPT: What trend do you see after 5 periods? The proportion of 'New' customers drops from 100% to 11.3%, while 'Churned' steadily climbs to 54.95% due to the absorbing barrier.
+
+
+----------------------------------------------------------------------
+[Question 4] Simulate Cohort of 1,000 Customers over 10 Periods
+----------------------------------------------------------------------
+PROBLEM:
+Simulate 1,000 individual customers over 10 periods. Track proportions of New, Active, Churned at each step, plot customer behavior trajectories, and find the maximum churn period.
+
+PYTHON CODE:
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+np.random.seed(42)
+n_customers = 1000
+n_periods = 10
+
+# All 1000 customers start at state 0 ('New')
+customers = np.zeros(n_customers, dtype=int)
+results = []
+
+states = ["New", "Active", "Churned"]
+matrix_1 = np.array([
+    [0.50, 0.40, 0.10],
+    [0.10, 0.70, 0.20],
+    [0.00, 0.00, 1.00]
+])
+
+for period in range(n_periods + 1):
+    counts = np.bincount(customers, minlength=3)
+    proportions = counts / n_customers
+    results.append([period, proportions[0], proportions[1], proportions[2]])
+    
+    # Transition each customer according to current state row probabilities
+    customers = np.array([np.random.choice(3, p=matrix_1[s]) for s in customers])
+
+results_df = pd.DataFrame(results, columns=["Period", "New", "Active", "Churned"])
+print("--- Cohort Simulation Proportions Over 10 Periods ---")
+print(results_df.to_string(index=False))
+
+# Maximum churn period
+max_churn_period = results_df.loc[results_df['Churned'].idxmax()]
+print(f"\nMaximum Churn Occurred at Period: {int(max_churn_period['Period'])} (Churned = {max_churn_period['Churned']*100:.1f}%)")
+
+# Plot trajectories
+plt.figure(figsize=(10, 5))
+plt.plot(results_df["Period"], results_df["New"], marker='o', color='#38bdf8', label="New")
+plt.plot(results_df["Period"], results_df["Active"], marker='s', color='#10b981', label="Active")
+plt.plot(results_df["Period"], results_df["Churned"], marker='^', color='#ef4444', label="Churned")
+plt.xlabel("Period")
+plt.ylabel("Proportion of Customers")
+plt.title("Markov Chain Cohort Simulation of Customer Lifecycle")
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()
+
+VERIFIED OUTPUT:
+--- Cohort Simulation Proportions Over 10 Periods ---
+ Period   New  Active  Churned
+      0 1.000   0.000    0.000
+      1 0.503   0.397    0.100
+      2 0.284   0.491    0.225
+      3 0.193   0.456    0.351
+      4 0.145   0.389    0.466
+      5 0.113   0.338    0.549
+      6 0.084   0.275    0.641
+      7 0.068   0.230    0.702
+      8 0.069   0.191    0.740
+      9 0.058   0.164    0.778
+     10 0.046   0.136    0.818
+
+Maximum Churn Occurred at Period: 10 (Churned = 81.8%)
+
+VIVA / KEY CONCEPT: Why does the churned proportion monotonically increase? Because Churned has probability 1.0 of remaining Churned. Eventually, as t -> ∞, the entire population will be absorbed into Churned (stationary distribution = [0, 0, 1]).
+
