@@ -1,13 +1,12 @@
 ======================================================================
  PRACTICAL 3: PRACTICAL 3: JOINT, MARGINAL & CONDITIONAL PROBABILITY ON REAL DATASETS
+ THEORY: Core Theory: Contingency Tables, Joint & Conditional Probability
+Joint Probability P(A ∩ B) is the probability that both events occur. Conditional Probability P(A | B) = P(A ∩ B) / P(B) is the probability of A given that B has occurred. Two events are statistically independent if and only if P(A ∩ B) = P(A) · P(B).
 ======================================================================
 
-THEORY: Core Theory: Contingency Tables, Joint & Conditional Probability
-Joint Probability P(A ∩ B) is the probability that both events occur. Conditional Probability P(A | B) = P(A ∩ B) / P(B) is the probability of A given that B has occurred. Two events are statistically independent if and only if P(A ∩ B) = P(A) · P(B).
-
-----------------------------------------------------------------------
-[Titanic Part A] Titanic: Contingency Table & Survival by Gender
-----------------------------------------------------------------------
+======================================================================
+[Practical 3 - Titanic Part A] Titanic: Contingency Table & Survival by Gender
+======================================================================
 PROBLEM:
 Load the Titanic dataset. Construct a contingency table for sex vs. survival, then estimate: 1) Joint probability P(Female ∩ Survived), 2) Conditional probability P(Survived | Female), 3) Conditional probability P(Survived | Male).
 
@@ -57,9 +56,9 @@ Conditional Probability P(Survived | Male)   : 0.1889
 VIVA / KEY CONCEPT: What does P(Survived | Female) = 74.2% vs P(Survived | Male) = 18.9% signify? It demonstrates strong statistical dependence between gender and survival due to the 'women and children first' evacuation policy.
 
 
-----------------------------------------------------------------------
-[Titanic Part B] Titanic: Probability of Survival Conditional on Passenger Class
-----------------------------------------------------------------------
+======================================================================
+[Practical 3 - Titanic Part B] Titanic: Probability of Survival Conditional on Passenger Class
+======================================================================
 PROBLEM:
 Estimate the conditional probability of survival given passenger class (First, Second, Third) using groupby().
 
@@ -84,9 +83,9 @@ P(Survived | Third  Class) : 0.2424 (24.2%)
 VIVA / KEY CONCEPT: Notice that First Class passengers had more than 2.5x higher survival probability than Third Class passengers, confirming socioeconomic privilege in emergency rescue.
 
 
-----------------------------------------------------------------------
-[Penguins Part A] Palmer Penguins: Contingency Table & Joint Probabilities
-----------------------------------------------------------------------
+======================================================================
+[Practical 3 - Penguins Part A] Palmer Penguins: Contingency Table & Joint Probabilities
+======================================================================
 PROBLEM:
 Load the Palmer Penguins dataset. Construct a contingency table for Species vs. Island. Compute: 1) P(Adelie ∩ Dream), 2) P(Gentoo ∩ Biscoe).
 
@@ -126,9 +125,9 @@ P(Gentoo ∩ Biscoe Island): 0.3605
 VIVA / KEY CONCEPT: Look closely at the table: All 124 Gentoo penguins live on Biscoe Island, and all 68 Chinstrap penguins live on Dream Island. Only Adelie penguins inhabit all three islands.
 
 
-----------------------------------------------------------------------
-[Penguins Part B] Palmer Penguins: Conditional Probabilities
-----------------------------------------------------------------------
+======================================================================
+[Practical 3 - Penguins Part B] Palmer Penguins: Conditional Probabilities
+======================================================================
 PROBLEM:
 Calculate: 1) P(Adelie | Dream Island), 2) P(Male | Gentoo Species).
 
@@ -157,9 +156,9 @@ P(Male | Gentoo Species) : 0.4919 (61 / 124)
 VIVA / KEY CONCEPT: Why does P(Male | Gentoo) equal 49.19%? Because in nature, the sex ratio of penguins is approximately 1:1 (50% male, 50% female).
 
 
-----------------------------------------------------------------------
-[Penguins Part C] Statistical Independence Test: P(A ∩ B) vs P(A) · P(B)
-----------------------------------------------------------------------
+======================================================================
+[Practical 3 - Penguins Part C] Statistical Independence Test: P(A ∩ B) vs P(A) · P(B)
+======================================================================
 PROBLEM:
 Test whether Species and Island are statistically independent using: P(A ∩ B) = P(A) · P(B). Let A = Penguin is Gentoo, B = Penguin is on Biscoe Island.
 

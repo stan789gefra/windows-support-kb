@@ -1,13 +1,12 @@
 ======================================================================
  PRACTICAL 8: PRACTICAL 8: PAGERANK ALGORITHM & RANDOM WALK ON GRAPHS
+ THEORY: Core Theory: PageRank, Markov Chains & The Random Surfer Model
+PageRank treats the web as a directed graph where hyperlinks are votes of authority. It models a random surfer who clicks outgoing links with probability d (damping factor, typically 0.85) or jumps to a random page with probability (1 - d). The steady-state visit probability is the principal eigenvector.
 ======================================================================
 
-THEORY: Core Theory: PageRank, Markov Chains & The Random Surfer Model
-PageRank treats the web as a directed graph where hyperlinks are votes of authority. It models a random surfer who clicks outgoing links with probability d (damping factor, typically 0.85) or jumps to a random page with probability (1 - d). The steady-state visit probability is the principal eigenvector.
-
-----------------------------------------------------------------------
-[Network 1] Simulate Random Walk & Compute PageRank on 4-Node Web Graph
-----------------------------------------------------------------------
+======================================================================
+[Practical 8 - Network 1] Simulate Random Walk & Compute PageRank on 4-Node Web Graph
+======================================================================
 PROBLEM:
 Construct directed graph G with edges: (A,B), (A,C), (B,C), (B,D), (C,A), (C,D), (D,A), (D,C). 1. Visualize network. 2. Simulate 20-step random walk from 'A'. 3. Count node visits. 4. Compute exact PageRank with nx.pagerank.
 
@@ -78,9 +77,9 @@ Page B: 0.1557 (15.57%)
 VIVA / KEY CONCEPT: Why does Page C have the highest PageRank? Because Page C receives incoming links from both A and B, plus D. Since important pages point to C, C acquires the highest stationary authority.
 
 
-----------------------------------------------------------------------
-[Network 2] PageRank on Alternative Web Topology (25-Step Walk from 'B')
-----------------------------------------------------------------------
+======================================================================
+[Practical 8 - Network 2] PageRank on Alternative Web Topology (25-Step Walk from 'B')
+======================================================================
 PROBLEM:
 Construct directed graph G2 with edges: (A,B), (A,D), (B,C), (B,D), (C,A), (C,D), (D,B). Simulate 25-step random walk starting at 'B'. Compare visit counts and PageRank.
 

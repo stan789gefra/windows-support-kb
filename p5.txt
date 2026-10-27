@@ -1,13 +1,12 @@
 ======================================================================
  PRACTICAL 5: PRACTICAL 5: HIDDEN MARKOV MODELS (HMM) & NLP INFERENCE
+ THEORY: Core Theory: Hidden Markov Models (HMM) & Sequence Likelihood
+An HMM consists of hidden states S (e.g., parts of speech), observable symbols V (e.g., words), initial probabilities π, transition probabilities A, and emission probabilities B. The joint probability of state sequence S and observation O is: P(S, O) = π(s₁) B(o₁|s₁) ∏ A(s_t|s_t-1) B(o_t|s_t).
 ======================================================================
 
-THEORY: Core Theory: Hidden Markov Models (HMM) & Sequence Likelihood
-An HMM consists of hidden states S (e.g., parts of speech), observable symbols V (e.g., words), initial probabilities π, transition probabilities A, and emission probabilities B. The joint probability of state sequence S and observation O is: P(S, O) = π(s₁) B(o₁|s₁) ∏ A(s_t|s_t-1) B(o_t|s_t).
-
-----------------------------------------------------------------------
-[Question 1] HMM Model Setup & Matrix Probability Verification
-----------------------------------------------------------------------
+======================================================================
+[Practical 5 - Question 1] HMM Model Setup & Matrix Probability Verification
+======================================================================
 PROBLEM:
 Hidden states: ['Noun', 'Verb']. Observations: ['dogs', 'barks', 'loudly']. Set up Initial probabilities π = [0.6, 0.4], Transition matrix A, and Emission matrix B. Verify row sums.
 
@@ -73,9 +72,9 @@ Sum of emission probabilities   : [1. 1.]
 VIVA / KEY CONCEPT: What is the difference between transition probability and emission probability? Transition probability P(s_t | s_t-1) is the chance of moving from one hidden state to another. Emission probability P(o_t | s_t) is the chance of observing a specific word given a hidden state.
 
 
-----------------------------------------------------------------------
-[Question 2] Calculate Marginal Probability of Observation P('dogs')
-----------------------------------------------------------------------
+======================================================================
+[Practical 5 - Question 2] Calculate Marginal Probability of Observation P('dogs')
+======================================================================
 PROBLEM:
 Using the Law of Total Probability, calculate the marginal probability of observing 'dogs': P(dogs) = P(Noun)·P(dogs|Noun) + P(Verb)·P(dogs|Verb).
 
@@ -105,9 +104,9 @@ Total P('dogs') = 0.4200 + 0.0400 = 0.4600
 VIVA / KEY CONCEPT: If you observe 'dogs', is it more likely a Noun or a Verb? P(Noun | dogs) = 0.42 / 0.46 ≈ 91.3%. It is overwhelmingly likely to be a Noun.
 
 
-----------------------------------------------------------------------
-[Question 3] Calculate Joint Probability of Sequence: 'Noun -> Verb' & 'dogs -> barks'
-----------------------------------------------------------------------
+======================================================================
+[Practical 5 - Question 3] Calculate Joint Probability of Sequence: 'Noun -> Verb' & 'dogs -> barks'
+======================================================================
 PROBLEM:
 Calculate joint probability for hidden state sequence (Noun -> Verb) and observation sequence ('dogs' -> 'barks') using: P = P(Noun) · P(dogs|Noun) · P(Verb|Noun) · P(barks|Verb).
 

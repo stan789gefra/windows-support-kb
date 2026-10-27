@@ -1,13 +1,12 @@
 ======================================================================
  PRACTICAL 2: PRACTICAL 2: CONTINUOUS & DISCRETE PROBABILITY DISTRIBUTIONS
+ THEORY: Core Theory: Parametric Distribution Fitting via Maximum Likelihood Estimation (MLE)
+Fitting a probability distribution involves finding parameter estimates (e.g., mean μ and variance σ² for Normal, rate λ for Poisson, scale β = 1/λ for Exponential) that maximize the likelihood of observing the empirical sample data.
 ======================================================================
 
-THEORY: Core Theory: Parametric Distribution Fitting via Maximum Likelihood Estimation (MLE)
-Fitting a probability distribution involves finding parameter estimates (e.g., mean μ and variance σ² for Normal, rate λ for Poisson, scale β = 1/λ for Exponential) that maximize the likelihood of observing the empirical sample data.
-
-----------------------------------------------------------------------
-[Question 1] Normal Distribution: Modeling & Fitting Examination Scores
-----------------------------------------------------------------------
+======================================================================
+[Practical 2 - Question 1] Normal Distribution: Modeling & Fitting Examination Scores
+======================================================================
 PROBLEM:
 1. Generate 500 normally distributed scores with mean 70 and standard deviation 10. 2. Plot a density histogram. 3. Fit a Normal distribution using stats.norm.fit. 4. Overlay the fitted PDF on the histogram. 5. Report estimated mean and std dev.
 
@@ -50,9 +49,9 @@ Estimated Standard Deviation (σ): 9.8027 (True: 10)
 VIVA / KEY CONCEPT: Why must density=True in plt.hist? Because the PDF represents probability density, where the total area under the curve equals 1. Setting density=True normalizes histogram bin heights so area sums to 1.
 
 
-----------------------------------------------------------------------
-[Question 2] Poisson Distribution: Customer Support Requests per Minute
-----------------------------------------------------------------------
+======================================================================
+[Practical 2 - Question 2] Poisson Distribution: Customer Support Requests per Minute
+======================================================================
 PROBLEM:
 1. Generate 500 observations assuming an average of 4 requests per minute (Poisson with λ=4). 2. Plot frequency distribution. 3. Estimate Poisson parameter λ. 4. Overlay fitted Poisson PMF probabilities.
 
@@ -96,9 +95,9 @@ Estimated Lambda (λ): 3.9320 (True λ = 4)
 VIVA / KEY CONCEPT: What is the key property of the Poisson distribution? In a theoretical Poisson distribution, the mean and variance are equal: E[X] = Var(X) = λ.
 
 
-----------------------------------------------------------------------
-[Question 3] Exponential Distribution: Customer Waiting Time
-----------------------------------------------------------------------
+======================================================================
+[Practical 2 - Question 3] Exponential Distribution: Customer Waiting Time
+======================================================================
 PROBLEM:
 1. Generate 500 observations from an Exponential distribution assuming an average waiting time of 5 minutes (scale=5). 2. Plot histogram. 3. Fit Exponential distribution. 4. Overlay fitted PDF.
 
@@ -139,9 +138,9 @@ Estimated Scale Parameter (Mean Wait Time): 5.0215 minutes (True: 5.0)
 VIVA / KEY CONCEPT: What is the memoryless property of the Exponential distribution? P(X > s + t | X > s) = P(X > t). The probability of waiting an additional t minutes is independent of how long you have already waited.
 
 
-----------------------------------------------------------------------
-[Question 4] Sensor Noise Modeling with Gaussian Distribution
-----------------------------------------------------------------------
+======================================================================
+[Practical 2 - Question 4] Sensor Noise Modeling with Gaussian Distribution
+======================================================================
 PROBLEM:
 Given true sensor measurements X = [50, 52, 48, 51, 49, 53, 50, 47, 52, 51], model measurement noise following Gaussian noise ϵ ~ N(0, σ²=4) (σ = 2). Compare original vs noisy data and visualize effect.
 

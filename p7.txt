@@ -1,13 +1,12 @@
 ======================================================================
  PRACTICAL 7: PRACTICAL 7: BAYESIAN PARAMETER ESTIMATION
+ THEORY: Core Theory: Bayesian Updating & Grid Approximation
+Bayes' Theorem updates belief upon observing data D: P(θ | D) ∝ P(D | θ) · P(θ). When dealing with large binomial counts, log-likelihood ln L(θ) = s ln(θ) + (n-s) ln(1-θ) prevents arithmetic underflow. The Maximum A Posteriori (MAP) estimate maximizes P(θ | D).
 ======================================================================
 
-THEORY: Core Theory: Bayesian Updating & Grid Approximation
-Bayes' Theorem updates belief upon observing data D: P(θ | D) ∝ P(D | θ) · P(θ). When dealing with large binomial counts, log-likelihood ln L(θ) = s ln(θ) + (n-s) ln(1-θ) prevents arithmetic underflow. The Maximum A Posteriori (MAP) estimate maximizes P(θ | D).
-
-----------------------------------------------------------------------
-[Question 1] Estimate Female Survival Rate θ on Titanic via Bayesian Grid Updating
-----------------------------------------------------------------------
+======================================================================
+[Practical 7 - Question 1] Estimate Female Survival Rate θ on Titanic via Bayesian Grid Updating
+======================================================================
 PROBLEM:
 Extract female passengers on Titanic (n=314, s=233 survived, 81 died). Discretize parameter θ in [0.1, 0.9]. Set a uniform prior P(θ) = 1/9. Compute Binomial log-likelihood, likelihood, unnormalized posterior, and normalized posterior. Report the MAP estimate and posterior mean.
 

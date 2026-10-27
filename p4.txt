@@ -1,13 +1,12 @@
 ======================================================================
  PRACTICAL 4: PRACTICAL 4: DISCRETE-TIME MARKOV CHAINS (DTMC)
+ THEORY: Core Theory: Discrete-Time Markov Chains & State Transition Dynamics
+A Markov chain satisfies the Markov property: the future state depends only on the current state. The transition matrix P defines P_ij = P(X_t+1 = j | X_t = i). The state probability vector after t periods is given by Chapman-Kolmogorov: v_t = v_0 · P^t.
 ======================================================================
 
-THEORY: Core Theory: Discrete-Time Markov Chains & State Transition Dynamics
-A Markov chain satisfies the Markov property: the future state depends only on the current state. The transition matrix P defines P_ij = P(X_t+1 = j | X_t = i). The state probability vector after t periods is given by Chapman-Kolmogorov: v_t = v_0 · P^t.
-
-----------------------------------------------------------------------
-[Question 1 & 2] Transition Matrix Setup & 1-Period Customer State Distribution
-----------------------------------------------------------------------
+======================================================================
+[Practical 4 - Question 1 & 2] Transition Matrix Setup & 1-Period Customer State Distribution
+======================================================================
 PROBLEM:
 Define customer states S = ['New', 'Active', 'Churned']. Matrix: New -> [0.5, 0.4, 0.1], Active -> [0.1, 0.7, 0.2], Churned -> [0.0, 0.0, 1.0]. Check row sums. For initial customer vector v0 = [1, 0, 0], compute state distribution after 1 period.
 
@@ -59,9 +58,9 @@ Churned : 0.1000
 VIVA / KEY CONCEPT: What is an absorbing state in a Markov chain? A state that once entered cannot be left. Here, row 3 is [0, 0, 1], meaning once a customer is 'Churned', they remain churned forever (P_33 = 1).
 
 
-----------------------------------------------------------------------
-[Question 3] Predict Customer State Distribution After 5 Periods
-----------------------------------------------------------------------
+======================================================================
+[Practical 4 - Question 3] Predict Customer State Distribution After 5 Periods
+======================================================================
 PROBLEM:
 Starting from initial distribution v0 = [1, 0, 0], compute the customer state distribution after 5 periods using matrix multiplication v5 = v0 · P^5.
 
@@ -95,9 +94,9 @@ Churned : 0.5495
 VIVA / KEY CONCEPT: What trend do you see after 5 periods? The proportion of 'New' customers drops from 100% to 11.3%, while 'Churned' steadily climbs to 54.95% due to the absorbing barrier.
 
 
-----------------------------------------------------------------------
-[Question 4] Simulate Cohort of 1,000 Customers over 10 Periods
-----------------------------------------------------------------------
+======================================================================
+[Practical 4 - Question 4] Simulate Cohort of 1,000 Customers over 10 Periods
+======================================================================
 PROBLEM:
 Simulate 1,000 individual customers over 10 periods. Track proportions of New, Active, Churned at each step, plot customer behavior trajectories, and find the maximum churn period.
 

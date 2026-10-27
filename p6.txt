@@ -1,13 +1,12 @@
 ======================================================================
  PRACTICAL 6: PRACTICAL 6: MONTE CARLO SIMULATION & FINANCIAL RISK (VAR)
+ THEORY: Core Theory: Monte Carlo Methods & Value at Risk (VaR)
+Monte Carlo simulation models uncertainty by generating thousands of random market trajectories. The 95% Value at Risk (VaR) identifies the 5th percentile of the profit/loss distribution: the maximum expected loss at a 95% confidence level over a given horizon.
 ======================================================================
 
-THEORY: Core Theory: Monte Carlo Methods & Value at Risk (VaR)
-Monte Carlo simulation models uncertainty by generating thousands of random market trajectories. The 95% Value at Risk (VaR) identifies the 5th percentile of the profit/loss distribution: the maximum expected loss at a 95% confidence level over a given horizon.
-
-----------------------------------------------------------------------
-[Question 1] Simulate Portfolio Daily Returns & Probability of Loss
-----------------------------------------------------------------------
+======================================================================
+[Practical 6 - Question 1] Simulate Portfolio Daily Returns & Probability of Loss
+======================================================================
 PROBLEM:
 A portfolio has an initial value of ₹10,00,000 ($1,000,000). Assume daily returns follow N(μ=0.0005, σ=0.015). Run 10,000 Monte Carlo simulations. Compute simulated portfolio values, profit/loss, and probability of suffering a loss.
 
@@ -58,9 +57,9 @@ Best Simulated Gain           : ₹58,746.43
 VIVA / KEY CONCEPT: Why is the probability of loss 48.74% when the mean return is positive (+0.05%)? Because the standard deviation (1.5%) is 30 times larger than the mean return (0.05%), causing a substantial portion of the bell curve to fall below zero.
 
 
-----------------------------------------------------------------------
-[Question 2] Calculate and Visualize 95% Value at Risk (VaR)
-----------------------------------------------------------------------
+======================================================================
+[Practical 6 - Question 2] Calculate and Visualize 95% Value at Risk (VaR)
+======================================================================
 PROBLEM:
 Calculate the 95% Value at Risk (VaR) by finding the 5th percentile of the profit/loss distribution. Plot the profit/loss distribution and annotate the 95% VaR threshold line.
 

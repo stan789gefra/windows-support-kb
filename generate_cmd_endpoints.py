@@ -17,10 +17,9 @@ for i, p in enumerate(build_website.practicals, 1):
     txt_lines = [
         "=" * 70,
         f" PRACTICAL {i}: {p['title'].upper()}",
-        "=" * 70,
-        "",
-        f"THEORY: {p.get('theory_title', '')}",
+        f" THEORY: {p.get('theory_title', '')}",
         p.get('theory_desc', ''),
+        "=" * 70,
         ""
     ]
     
@@ -29,9 +28,9 @@ for i, p in enumerate(build_website.practicals, 1):
         py_lines.append(q['code'].strip())
         py_lines.append("\n")
         
-        txt_lines.append("-" * 70)
-        txt_lines.append(f"[{q['badge']}] {q['title']}")
-        txt_lines.append("-" * 70)
+        txt_lines.append("=" * 70)
+        txt_lines.append(f"[Practical {i} - {q['badge']}] {q['title']}")
+        txt_lines.append("=" * 70)
         txt_lines.append("PROBLEM:")
         txt_lines.append(q['desc'])
         txt_lines.append("\nPYTHON CODE:")
@@ -52,4 +51,4 @@ for i, p in enumerate(build_website.practicals, 1):
 with open("all.txt", "w", encoding="utf-8") as f:
     f.write("\n".join(all_txt))
 
-print("Successfully generated p1-p8 (.py and .txt) and all.txt")
+print("Regenerated p1-p8 and all.txt with unified question blocks")
